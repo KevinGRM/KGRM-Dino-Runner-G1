@@ -1,6 +1,7 @@
 import pygame
 
 from dino_runner.components.dinosaur import Dinosaur
+
 from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
 
 
@@ -41,7 +42,7 @@ class Game:
         self.screen.fill((255, 255, 255))
         self.draw_background()
         self.player.draw(self.screen)
-        #pygame.display.update()
+        pygame.display.update()
         pygame.display.flip()
         
 

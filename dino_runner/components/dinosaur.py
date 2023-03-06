@@ -1,59 +1,70 @@
 import pygame
 from pygame.sprite import Sprite
 
-from dino_runner.utils.constants import JUMPING, RUNNING
+from dino_runner.utils.constants import JUMPING, RUNNING, DUCKING
 
 DINO_RUNNING = "running"
 DINO_JUMPING = "jumping"
+DINO_DUCKING = "ducking"
 
-class Dinosaur(Sprite): #El () en una clase es para indicar que se va a extraer algo de otro archivo py. 
+class Dinosaur(Sprite):
     POSITION_X = 80
     POSITION_Y = 310
     JUMP_VELOCITY = 8.5
+    DUCK_VELOCITY = 10
 
-    def __init__(self): 
+    def __init__(self):
         self.image = RUNNING[0]
         self.rect = self.image.get_rect()
-        self.rect.x = self.POSITION_X
-        self.rect.y = self.POSITION_Y
-
+        self.rect_x = self.POSITION_X
+        self.rect_y = self.POSITION_Y
         self.step = 0
-        self.action = DINO_RUNNING
+        self.actions = DINO_RUNNING
         self.jump_velocity = self.JUMP_VELOCITY
-    
+        self.duck_velocity = self.DUCK_VELOCITY
+
+
     def update(self, user_input):
-       if self.action == DINO_RUNNING: 
-           self.run()
-       elif self.action == DINO_JUMPING:
-           self.jump()
+        if self.actions == DINO_RUNNING:
+            self.run()
+        elif self.actions == DINO_JUMPING:
+            self.jump()
+        elif self.actions == DINO_DUCKING:
+            self.duck()
+    
+        if self.actions != DINO_JUMPING:
+            if user_input[pygame.K_UP]:
+                self.actions = DINO_JUMPING        
+            elif user_input[pygame.K_DOWN]:
+                self.actions = DINO_DUCKING
+            else:
+                self.actions = DINO_RUNNING
 
-       if self.action != DINO_JUMPING:
-           if user_input[pygame.K_UP]:
-               self.action = DINO_JUMPING
-           else:
-               self.action = DINO_RUNNING
-
-       if self.step >= 10:
-           self.step = 0
-
+        if self.step >= 10:
+            self.step = 0
+ 
     def jump(self):
-       
         self.image = JUMPING
-        self.rect.y -= self.jump_velocity *4
-        self.jump_velocity -= 0.8
-        print("VELOCITY ::", self.jump_velocity)
-        print("Y ::", self.rect.y)
+        self.rect_y -= self.jump_velocity * 4
+        self.jump_velocity -= 0.8   
         if self.jump_velocity < -self.JUMP_VELOCITY:
-               self.jump_velocity = self.JUMP_VELOCITY
-               self.action = DINO_RUNNING
-               self.rect.y = self.POSITION_Y
-        
-    def run (self):
-        self.image = RUNNING[self.step // 5] 
-        self.rect = self.image.get_rect()
-        self.rect.x = self.POSITION_X
-        self.rect.y = self.POSITION_Y
+            self.jump_velocity = self.JUMP_VELOCITY
+            self.actions = DINO_RUNNING
+            self.rect_y = self.POSITION_Y
+
+    def run(self):
+        self.image = RUNNING[self.step // 5]
+        self.rect = self.image.get_rect()        
+        self.rect_x = self.POSITION_X
+        self.rect_y = self.POSITION_Y 
         self.step += 1
 
-    def draw(self, screen):
-        screen.blit(self.image, (self.rect.x, self.rect.y))
+    def duck(self):
+        self.image = DUCKING[self.step // 5]  
+        self.rect = self.image.get_rect()
+        self.rect_x = self.POSITION_X
+        self.rect_y = self.POSITION_Y+30
+        self.step += 1
+
+    def draw(self, screem):
+        screem.blit(self.image, (self.rect_x, self.rect_y))
