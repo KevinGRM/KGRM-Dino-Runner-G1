@@ -3,11 +3,19 @@ import random
 from dino_runner.components.obstacles.obstacles import Obstacle
 from dino_runner.utils.constants import BIRD
 
-class Birds(Obstacle):
 
+class Bird(Obstacle):
     def __init__(self):
-        self.step = 0
-        image = BIRD[self.step//5]
-        self.step += 1
+        image = BIRD[0]
         super().__init__(image)
-        self.rect.y = 270
+        positions = [100, 250, 50]
+        self.rect.y = random.choice(positions)
+        self.step = 0
+
+    def update(self, game_speed, obstacles):
+        super().update(game_speed, obstacles)
+        self.image = BIRD[self.step // 10]
+        self.step += 1
+        if self.step >= 20:
+            self.step = 0
+            
