@@ -16,9 +16,9 @@ RUN_IMG = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD}
 
 class Dinosaur(Sprite):
     POSITION_X = 80
-    POSITION_Y = 310
+    POSITION_Y = 380   ##310
     JUMP_VELOCITY = 8.5
-    POSITION_Y_DUCK = 340
+    POSITION_Y_DUCK = 410  ##340+70
 
     def __init__(self):
         self.type = DEFAULT_TYPE
@@ -28,18 +28,21 @@ class Dinosaur(Sprite):
         self.jump_velocity = self.JUMP_VELOCITY
         self.step = 0
         self.text = Text()
+        pygame.mixer.init()
+        self.jumpSound = pygame.mixer.Sound("dino_runner/assets/Themes/Jump.mp3")
+        self.duckSound = pygame.mixer.Sound("dino_runner/assets/Themes/Mlem.mp3")
 
     def update(self, user_input):
         if self.action == DINO_RUNNING:
             self.run()
-        elif self.action == DINO_DUCKING:
-            self.duck()
+        elif self.action == DINO_DUCKING:            
+            self.duck() 
         elif self.action == DINO_JUMPING:
-            self.jump()
+            self.jump()                 
 
         if user_input[pygame.K_DOWN]:
             if self.action == DINO_JUMPING:
-                self.jump()
+                self.jump()              
             else:
                 self.action = DINO_DUCKING
         elif self.action != DINO_JUMPING:
@@ -58,15 +61,18 @@ class Dinosaur(Sprite):
     def duck(self):
         self.update_image(DUCK_IMG[self.type][self.step // 5], pos_y = self.POSITION_Y_DUCK)
         self.step += 1
+        self.duckSound.play()   
 
-    def jump(self):
+    def jump(self):   
         pos_y = self.rect.y - self.jump_velocity * 4
-        self.update_image(JUMP_IMG[self.type], pos_y = pos_y)
+        self.update_image(JUMP_IMG[self.type], pos_y = pos_y)  
         self.jump_velocity -= 0.8
         if self.jump_velocity < -self.JUMP_VELOCITY:
             self.jump_velocity = self.JUMP_VELOCITY
             self.action = DINO_RUNNING
-            self.rect.y = self.POSITION_Y
+            self.rect.y = self.POSITION_Y    
+
+        self.jumpSound.play()   
 
     def update_image(self, image:pygame.Surface, pos_x = None, pos_y=None):
         self.image = image

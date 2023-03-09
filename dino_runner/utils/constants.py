@@ -49,11 +49,15 @@ SMALL_CACTUS = [
     pygame.image.load(os.path.join(IMG_DIR, "Cactus/SmallCactus1.png")),
     pygame.image.load(os.path.join(IMG_DIR, "Cactus/SmallCactus2.png")),
     pygame.image.load(os.path.join(IMG_DIR, "Cactus/SmallCactus3.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Cactus/SmallCactus4.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Cactus/SmallCactus5.png")),
 ]
 LARGE_CACTUS = [
     pygame.image.load(os.path.join(IMG_DIR, "Cactus/LargeCactus1.png")),
     pygame.image.load(os.path.join(IMG_DIR, "Cactus/LargeCactus2.png")),
     pygame.image.load(os.path.join(IMG_DIR, "Cactus/LargeCactus3.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Cactus/LargeCactus4.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Cactus/LargeCactus5.png")),
 ]
 
 BIRD = [
@@ -71,8 +75,12 @@ BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
 
 HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
 
+GAMEOVER = pygame.image.load(os.path.join(IMG_DIR, 'Other/GameOver.png'))
+
 DEFAULT_TYPE = "default"
 
 SHIELD_TYPE = "shield"
 
 FONT_STYLE = "freesansbold.ttf"
+
+FONT_STYLE1 = '8-BIT WONDER.TTF'

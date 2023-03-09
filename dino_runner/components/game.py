@@ -1,3 +1,4 @@
+import time
 import pygame
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import Obstacle_manager
@@ -19,7 +20,7 @@ class Game:
         self.executing = False
         self.game_speed = 20
         self.x_pos_bg = 0
-        self.y_pos_bg = 380
+        self.y_pos_bg = 0
 
         self.player = Dinosaur()
         self.obstacle_manager = Obstacle_manager()
@@ -27,6 +28,14 @@ class Game:
         self.text = Text()
         self.death_count = 0
         self.power_up_manager = PowerUpManager()
+
+        
+        pygame.mixer.init()
+        self.YoshiIslandSound =  pygame.mixer.music.load("dino_runner/assets/Themes/Yoshi_Island.mp3") 
+        self.YoshiIslandSound = pygame.mixer.music.play(1)
+        
+        self.GameOverSound =  pygame.mixer.music.load("dino_runner/assets/Themes/GAMEOVER.mp3")
+        
 
     def run(self):
         self.executing = True
@@ -47,7 +56,8 @@ class Game:
             self.events()
             self.update()
             self.draw()
-
+        
+    
     def events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -58,7 +68,8 @@ class Game:
         self.player.update(user_input)
         self.obstacle_manager.update(self.game_speed, self.player, self.on_death)
         self.score.update(self)
-        self.power_up_manager.update(self.game_speed, self.score.score, self.player)
+        self.power_up_manager.update(self.game_speed, self.score.score, self.player) 
+        
 
     def draw(self):
         self.clock.tick(FPS)
@@ -87,18 +98,20 @@ class Game:
             pygame.time.delay(500)
             self.playing = False
             self.death_count += 1
+            self.GameOverSound = pygame.mixer.music.play(1)  
 
     def show_menu(self):
         self.screen.fill((255, 255, 255))
         half_screen_width = SCREEN_WIDTH // 2
         half_screen_height = SCREEN_HEIGHT // 2
         if not self.death_count:
-            self.text.show(self.screen, 32, "Welcome, press any key to start!", (half_screen_width, half_screen_height))
-        else:
+            self.text.show(self.screen, 32, "Loading....", (half_screen_width, half_screen_height))##Welcome, press any key to start!
+            time.sleep(1)
+        else:            
             self.text.show(self.screen, 32, "GAME OVER", (half_screen_width, half_screen_height))
             self.text.show(self.screen, 24, "press to start again", (half_screen_width, half_screen_height + 30))
             self.text.show(self.screen, 24, "Muertes: " + str(self.death_count), (half_screen_width - 70, half_screen_height + 60))
-            self.text.show(self.screen, 24, "Score: " + str(self.score.score), (half_screen_width + 70, half_screen_height + 60))
+            self.text.show(self.screen, 24, "Score: " + str(self.score.score), (half_screen_width + 70, half_screen_height + 60))           
 
         self.screen.blit(DINO_START, (half_screen_width - 40, half_screen_height - 140))
         pygame.display.update()

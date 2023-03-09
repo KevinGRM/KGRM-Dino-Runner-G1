@@ -10,7 +10,7 @@ class PowerUp(Sprite):
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.x = SCREEN_WIDTH + random.randint(800, 1000)
-        self.rect.y = random.randint(100, 150)
+        self.rect.y = random.randint(170, 220)
         self.type = ty
         self.duration = random.randint(5, 8)
         self.start_time = 0
@@ -22,3 +22,5 @@ class PowerUp(Sprite):
 
     def draw(self, screen):
         screen.blit(self.image, (self.rect.x, self.rect.y))
+
+        ##modificar a 300 y 250

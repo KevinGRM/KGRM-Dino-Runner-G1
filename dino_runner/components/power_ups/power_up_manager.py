@@ -30,3 +30,5 @@ class PowerUpManager:
     def reset(self):
         self.power_ups = []
         self.when_appears = random.randint(100, 200)
+
+        ##modificar a 300 y 250
